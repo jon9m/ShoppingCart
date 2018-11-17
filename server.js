@@ -1,13 +1,10 @@
 const express = require('express');
-const parser = require('body-parser');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
 const expressApp = express();
 
-//register a middleware - do request body parsing - html form
-expressApp.use(parser.urlencoded({ extended: false }));
 
 //Middleware - 'use' will trigger for all requests
 expressApp.use((request, response, next) => {
@@ -19,7 +16,12 @@ expressApp.use((request, response, next) => {
 });
 
 //Order matters
-expressApp.use(adminRoutes);
+expressApp.use('/admin', adminRoutes); //URL filtering
 expressApp.use(shopRoutes);
+
+//Catch all middleware
+expressApp.use((request, response, next) => {
+    response.status(404).send('<h1>Page not found!</h1>')
+});
 
 expressApp.listen(3000);
