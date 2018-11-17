@@ -7,6 +7,13 @@ const expressApp = express();
 
 const rootDir = require('./util/path');
 
+expressApp.set('view engine', 'pug');
+expressApp.set('views', 'views'); //default is views folder
+
+//Static file middleware - css
+expressApp.use(express.static(path.join(__dirname, 'public')));
+
+
 //Middleware - 'use' will trigger for all requests
 expressApp.use((request, response, next) => {
     //Next is a function passed by express to this function 
@@ -17,7 +24,7 @@ expressApp.use((request, response, next) => {
 });
 
 //Order matters
-expressApp.use('/admin', adminRoutes); //URL filtering
+expressApp.use('/admin', adminRoutes.router); //URL filtering
 expressApp.use(shopRoutes);
 
 //Catch all middleware
