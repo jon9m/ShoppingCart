@@ -1,10 +1,11 @@
 const express = require('express');
-
+const path = require('path');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
 const expressApp = express();
 
+const rootDir = require('./util/path');
 
 //Middleware - 'use' will trigger for all requests
 expressApp.use((request, response, next) => {
@@ -21,7 +22,8 @@ expressApp.use(shopRoutes);
 
 //Catch all middleware
 expressApp.use((request, response, next) => {
-    response.status(404).send('<h1>Page not found!</h1>')
+    // response.status(404).send('<h1>Page not found!</h1>');
+    response.sendFile(path.join(rootDir, 'views', '404.html'));
 });
 
 expressApp.listen(3000);
